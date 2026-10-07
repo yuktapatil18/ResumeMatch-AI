@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>ResumeMatch AI</title>
+
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+
+<body>
+
+<header class="navbar">
+
+    <div class="brand">
+        <div class="brand-logo">R</div>
+
+        <div>
+            <div class="brand-name">ResumeMatch</div>
+            <div class="brand-subtitle">NLP Resume Analyzer</div>
+        </div>
+    </div>
+
+    <div class="nav-right">
+        <span class="online-dot"></span>
+        Analysis ready
+    </div>
+
+</header>
+
+
+<main class="container">
+
+    <!-- HERO -->
+
+    <section class="hero">
+
+        <div class="hero-badge">
+            NLP-POWERED RESUME ANALYSIS
+        </div>
+
+        <h1>
+            Match your resume<br>
+            <span>with the right opportunity.</span>
+        </h1>
+
+        <p>
+            Upload your resume and compare it with a job description.
+            ResumeMatch analyzes skills, content similarity and missing
+            requirements to give you a clearer match assessment.
+        </p>
+
+    </section>
+
+
+    <!-- ANALYZER -->
+
+    <section class="analyzer">
+
+        <div class="section-top">
+
+            <div>
+                <span class="section-number">01</span>
+                <h2>Analyze your resume</h2>
+            </div>
+
+            <span class="format-label">PDF / TXT</span>
+
+        </div>
+
+
+        <div class="input-grid">
+
+            <!-- RESUME -->
+
+            <div class="input-card">
+
+                <div class="input-title">
+
+                    <div>
+                        <span class="step-label">RESUME</span>
+                        <h3>Upload your resume</h3>
+                    </div>
+
+                </div>
+
+                <label
+                    for="resume"
+                    class="upload-box"
+                    id="uploadArea"
+                >
+
+                    <div class="upload-symbol">
+                        ↑
+                    </div>
+
+                    <strong>Drop your resume here</strong>
+
+                    <span>
+                        or click to browse
+                    </span>
+
+                    <small>
+                        PDF or TXT files
+                    </small>
+
+                    <div
+                        id="fileName"
+                        class="file-name"
+                    ></div>
+
+                </label>
+
+                <input
+                    type="file"
+                    id="resume"
+                    accept=".pdf,.txt"
+                    hidden
+                >
+
+            </div>
+
+
+            <!-- JD -->
+
+            <div class="input-card">
+
+                <div class="input-title">
+
+                    <div>
+                        <span class="step-label">JOB DESCRIPTION</span>
+                        <h3>Paste the role details</h3>
+                    </div>
+
+                    <span
+                        id="charCount"
+                        class="char-count"
+                    >
+                        0
+                    </span>
+
+                </div>
+
+                <textarea
+                    id="jobDescription"
+                    placeholder="Paste the job description, responsibilities and required skills here..."
+                ></textarea>
+
+                <div class="textarea-hint">
+                    Include the complete job description for a better analysis.
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="analyze-area">
+
+            <button
+                id="analyzeBtn"
+                class="analyze-btn"
+            >
+
+                <span id="buttonText">
+                    Analyze Resume
+                </span>
+
+                <span
+                    id="loadingSpinner"
+                    class="spinner hidden"
+                ></span>
+
+                <span class="arrow">
+                    →
+                </span>
+
+            </button>
+
+            <p>
+                Your resume is analyzed against the provided job description.
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- ERROR -->
+
+    <div
+        id="errorBox"
+        class="error-box hidden"
+    ></div>
+
+
+    <!-- RESULTS -->
+
+    <section
+        id="results"
+        class="results hidden"
+    >
+
+        <div class="results-heading">
+
+            <div>
+
+                <span class="section-label">
+                    ANALYSIS RESULTS
+                </span>
+
+                <h2>Your resume analysis</h2>
+
+                <p>
+                    A breakdown of how your resume aligns with the job description.
+                </p>
+
+            </div>
+
+            <div
+                id="matchStatus"
+                class="match-status"
+            ></div>
+
+        </div>
+
+
+        <!-- MAIN SCORE -->
+
+        <div class="overview">
+
+            <div class="overall-card">
+
+                <div class="overall-left">
+
+                    <span class="card-label">
+                        OVERALL MATCH
+                    </span>
+
+                    <div class="score">
+                        <span id="matchScore">0</span><small>%</small>
+                    </div>
+
+                    <p id="scoreDescription">
+                        Match assessment
+                    </p>
+
+                </div>
+
+
+                <div class="score-ring">
+
+                    <svg viewBox="0 0 120 120">
+
+                        <circle
+                            class="ring-bg"
+                            cx="60"
+                            cy="60"
+                            r="50"
+                        ></circle>
+
+                        <circle
+                            id="scoreCircle"
+                            class="ring-progress"
+                            cx="60"
+                            cy="60"
+                            r="50"
+                        ></circle>
+
+                    </svg>
+
+                    <span id="ringScore">0%</span>
+
+                </div>
+
+            </div>
+
+
+            <div class="metric-card">
+
+                <span class="card-label">
+                    SKILL COVERAGE
+                </span>
+
+                <strong id="skillCoverage">
+                    0%
+                </strong>
+
+                <p>
+                    Required skills found
+                </p>
+
+            </div>
+
+
+            <div class="metric-card">
+
+                <span class="card-label">
+                    CONTENT SIMILARITY
+                </span>
+
+                <strong id="contentSimilarity">
+                    0%
+                </strong>
+
+                <p>
+                    TF-IDF similarity
+                </p>
+
+            </div>
+
+
+            <div class="metric-card">
+
+                <span class="card-label">
+                    PREDICTED ROLE
+                </span>
+
+                <strong
+                    id="category"
+                    class="role"
+                >
+                    —
+                </strong>
+
+                <p>
+                    ML classification result
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- SKILLS -->
+
+        <div class="skills-grid">
+
+            <div class="result-card">
+
+                <div class="result-card-header">
+
+                    <div>
+                        <span class="card-label">
+                            MATCHED
+                        </span>
+
+                        <h3>Skills you have</h3>
+                    </div>
+
+                    <span
+                        id="matchedCount"
+                        class="count"
+                    >
+                        0
+                    </span>
+
+                </div>
+
+                <div
+                    id="matchedSkills"
+                    class="skills"
+                ></div>
+
+            </div>
+
+
+            <div class="result-card">
+
+                <div class="result-card-header">
+
+                    <div>
+                        <span class="card-label">
+                            MISSING
+                        </span>
+
+                        <h3>Skills to consider</h3>
+                    </div>
+
+                    <span
+                        id="missingCount"
+                        class="count"
+                    >
+                        0
+                    </span>
+
+                </div>
+
+                <div
+                    id="missingSkills"
+                    class="skills"
+                ></div>
+
+            </div>
+
+        </div>
+
+
+        <!-- SCORE EXPLANATION -->
+
+        <div class="score-explanation">
+
+            <div class="explanation-head">
+
+                <div class="info">i</div>
+
+                <div>
+                    <span class="card-label">
+                        SCORING METHOD
+                    </span>
+
+                    <h3>How your score is calculated</h3>
+                </div>
+
+            </div>
+
+
+            <div class="formula">
+
+                <div>
+                    <strong>60%</strong>
+                    <span>Skill Coverage</span>
+                </div>
+
+                <div class="operator">+</div>
+
+                <div>
+                    <strong>40%</strong>
+                    <span>Content Similarity</span>
+                </div>
+
+                <div class="operator">=</div>
+
+                <div class="final-formula">
+                    <strong>Overall Match</strong>
+                    <span>Skills × 60% + Similarity × 40%</span>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- SUGGESTIONS -->
+
+        <div class="result-card recommendations">
+
+            <div class="result-card-header">
+
+                <div>
+                    <span class="card-label">
+                        RECOMMENDATIONS
+                    </span>
+
+                    <h3>Ways to strengthen your resume</h3>
+                </div>
+
+            </div>
+
+            <div
+                id="suggestions"
+                class="suggestions"
+            ></div>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<footer>
+
+    <span>ResumeMatch AI</span>
+
+    <span>
+        NLP-based Resume & Job Description Analysis
+    </span>
+
+</footer>
+
+
+<script src="/static/js/app.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,14 @@
+John Doe
+
+Skills:
+Python
+SQL
+Machine Learning
+Git
+Linux
+
+Education:
+Bachelor of Computer Science
+
+Projects:
+Resume Classification using NLP
